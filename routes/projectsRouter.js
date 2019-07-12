@@ -3,8 +3,10 @@ const express = require('express');
 const router = express.Router();
 
 const Projects = require('../data/helpers/projectModel.js');
+const Actions = require('../data/helpers/actionModel.js');
 const validateProjectId = require('../middleware/validateProjectId.js');
 const validateProject = require('../middleware/validateProject.js');
+const validateAction = require('../middleware/validateAction.js');
 
 router.get('/', (req, res) => {
   Projects.get()
@@ -49,6 +51,18 @@ router.post('/', validateProject, (req, res) => {
       res
         .status(500)
         .json({ message: 'Server error, unable to create project' });
+    });
+});
+
+router.post('/:id/actions', validateProjectId, validateAction, (req, res) => {
+  Actions.insert({ project_id: req.project.id, ...req.body })
+    .then(action => {
+      res.status(200).json(action);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ message: 'Server error, unable to create action' });
     });
 });
 

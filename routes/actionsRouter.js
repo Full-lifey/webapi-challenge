@@ -5,7 +5,7 @@ const router = express.Router();
 const Actions = require('../data/helpers/actionModel.js');
 const validateActionId = require('../middleware/validateActionId.js');
 const validateProjectId = require('../middleware/validateProjectId.js');
-const validateProject = require('../middleware/validateProject.js');
+const validateAction = require('../middleware/validateAction.js');
 
 router.get('/', (req, res) => {
   Actions.get()
@@ -29,6 +29,10 @@ router.get('/:id', validateActionId, (req, res) => {
         .status(500)
         .json({ message: 'Server error, unable to retrieve action' });
     });
+});
+
+router.post('/:id', validateProjectId, validateAction, (req, res) => {
+  console.log(req.project, req.action);
 });
 
 module.exports = router;
