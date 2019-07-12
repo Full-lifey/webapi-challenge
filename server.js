@@ -3,6 +3,7 @@ const express = require('express');
 const server = express();
 
 const projectsRouter = require('./routes/projectsRouter.js');
+const actionsRouter = require('./routes/actionsRouter.js');
 
 server.use(logger);
 server.use(express.json());
@@ -18,5 +19,6 @@ function logger(req, res, next) {
 }
 
 server.use('/api/projects', projectsRouter);
+server.use('/api/actions', actionsRouter);
 
 module.exports = server;
