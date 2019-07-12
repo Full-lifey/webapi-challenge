@@ -28,6 +28,16 @@ router.get('/:id', validateProjectId, (req, res) => {
     });
 });
 
+router.get('/:id/actions', validateProjectId, (req, res) => {
+  Projects.getProjectActions(req.params.id)
+    .then(actions => {
+      res.status(200).json(actions);
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Server error, unable to get actions' });
+    });
+});
+
 router.post('/', validateProject, (req, res) => {
   Projects.insert(req.body)
     .then(project => {
