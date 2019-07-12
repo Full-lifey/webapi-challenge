@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 const server = express();
 
@@ -7,6 +8,7 @@ const actionsRouter = require('./routes/actionsRouter.js');
 
 server.use(logger);
 server.use(express.json());
+server.use(cors());
 
 server.get('/', (req, res) => {
   res.send(`<h2>Sprint Challenge!</h2>`);
