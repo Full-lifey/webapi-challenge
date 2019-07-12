@@ -52,6 +52,18 @@ router.put('/:id', validateProjectId, validateProject, (req, res) => {
     });
 });
 
+router.delete('/:id', validateProjectId, (req, res) => {
+  Projects.remove(req.params.id)
+    .then(deleted => {
+      res.status(204).end();
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ message: 'Server error, unable to delete project' });
+    });
+});
+
 function validateProjectId(req, res, next) {
   const { id } = req.params;
   Projects.get(id)
