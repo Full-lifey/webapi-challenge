@@ -28,6 +28,18 @@ router.get('/:id', validateProjectId, (req, res) => {
     });
 });
 
+router.post('/', validateProject, (req, res) => {
+  Projects.insert(req.body)
+    .then(project => {
+      res.status(200).json(project);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ message: 'Server error, unable to create project' });
+    });
+});
+
 function validateProjectId(req, res, next) {
   const { id } = req.params;
   Projects.get(id)
@@ -42,6 +54,14 @@ function validateProjectId(req, res, next) {
     .catch(err => {
       res.status(500).json({ message: 'Server error, unable to retrieve' });
     });
+}
+
+function validateProject(req, res, next) {
+  if (!req.body.name || !req.body.description) {
+    res.status(400).json({ message: 'name and description are required' });
+  } else {
+    next();
+  }
 }
 
 module.exports = router;
