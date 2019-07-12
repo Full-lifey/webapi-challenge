@@ -31,8 +31,28 @@ router.get('/:id', validateActionId, (req, res) => {
     });
 });
 
-router.post('/:id', validateProjectId, validateAction, (req, res) => {
-  console.log(req.project, req.action);
+router.delete('/:id', validateActionId, (req, res) => {
+  Actions.remove(req.params.id)
+    .then(deleted => {
+      res.status(204).end();
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ message: 'Server error, unable to delete action' });
+    });
+});
+
+router.put('/:id', validateActionId, validateAction, (req, res) => {
+  Actions.update(req.params.id, req.body)
+    .then(action => {
+      res.status(200).json(action);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ message: 'Server error, unable to update action' });
+    });
 });
 
 module.exports = router;
